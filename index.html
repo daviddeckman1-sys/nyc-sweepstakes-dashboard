@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>NYC Sweepstakes Checklist</title>
+  <style>
+    :root { color-scheme: light; font: 16px/1.55 system-ui, sans-serif; color: #172b40; background: #f5f8fc; }
+    body { margin: 0; }
+    main { max-width: 48rem; margin: auto; padding: 2.5rem 1.25rem; }
+    h1 { font-size: clamp(2rem, 6vw, 3.25rem); line-height: 1.1; margin: .25rem 0 .75rem; }
+    h2 { font-size: 1.35rem; line-height: 1.25; margin: .5rem 0; }
+    article, aside { background: white; border: 1px solid #cbd9e8; border-radius: .85rem; padding: 1.25rem; margin: 1rem 0; }
+    aside { background: #eaf3fc; }
+    aside p { margin: 0; }
+    .label, .meta { color: #425a73; }
+    .label { font-size: .875rem; font-weight: 700; }
+    .links, .tracking { display: flex; flex-wrap: wrap; gap: .7rem 1rem; align-items: center; }
+    .tracking { border-top: 1px solid #e1e8f1; margin-top: 1rem; padding-top: .9rem; }
+    a { color: #184e96; }
+    button { font: inherit; color: #fff; background: #194b85; border: 0; border-radius: .4rem; padding: .45rem .75rem; cursor: pointer; }
+    code { overflow-wrap: anywhere; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="label">NYC ELIGIBLE · FREE ENTRY · MANUAL CHECKLIST</p>
+    <h1>NYC Sweepstakes Checklist</h1>
+    <p>Free entry routes for eligible New York City residents, including national giveaways that accept NYC residents. Check the sponsor’s rules before entering.</p>
+    <p class="meta">Sponsor rules reviewed November 9, 2026. Automatic discovery is off.</p>
+  </header>
+
+  <aside>
+    <p>Submit entries yourself on the sponsor’s site or through the sponsor’s free email route. This page stores only your entry checkmarks in this browser. They won’t follow you to another device or browser.</p>
+  </aside>
+  <p id="storage-error" role="alert" hidden>Browser storage is unavailable. Checkmarks cannot be saved here.</p>
+  <noscript><p>Enable JavaScript to save entry checkmarks and see current availability.</p></noscript>
+
+  <article data-id="devos-before-first-light-2026" data-close="2026-11-13T06:59:00Z">
+    <p class="label">ONE TIME · 11 PRIZES</p>
+    <h2>Devos x Marsupial Before First Light Giveaway</h2>
+    <p class="meta">$855.97 grand prize and ten $140.99 prizes · Closes November 13 at 1:59 a.m. ET</p>
+    <p>Submit the sponsor’s base entry with your first name, last name and email. Skip optional phone, referral and social actions.</p>
+    <div class="links">
+      <a href="https://www.devosoutdoor.com/pages/fall-giveaway" data-entry>Open sponsor entry page</a>
+      <a href="https://www.devosoutdoor.com/pages/official-giveaway-rules">Read official rules</a>
+    </div>
+    <div class="tracking" hidden>
+      <span role="status"></span>
+      <button type="button"></button>
+    </div>
+  </article>
+
+  <article data-id="disney-doomsday-premiere-2026" data-close="2026-11-19T16:59:00Z" data-daily>
+    <p class="label">DAILY · FREE EMAIL ROUTE</p>
+    <h2>Disney+ Perks Avengers: Doomsday Premiere Sweepstakes</h2>
+    <p class="meta">One premiere trip valued at up to the listed $2,960 estimate · Closes November 19 at 11:59 a.m. ET</p>
+    <p>Section 5.B of the rules lists the free email route. The sponsor allows one entry per sponsor day across all routes. For this promotion the sponsor day resets at midnight ET.</p>
+    <details data-entry>
+      <summary>Show manual email instructions</summary>
+      <p>Recipient <code>disneyplusentry@probabilityworks.com</code></p>
+      <p>Subject <code>Disney+ Perks: Avengers: Doomsday Premiere Sweepstakes Entry.</code></p>
+      <p>Include your full name on the first line and the name of your favorite Avenger on the second line. Leave out signatures and other commentary.</p>
+    </details>
+    <p><a href="https://perks.disneyplus.com/en_us/doomsday-sweeps-terms">Read official rules</a></p>
+    <div class="tracking" hidden>
+      <span role="status"></span>
+      <button type="button"></button>
+    </div>
+  </article>
+
+  <article data-id="off-grid-bug-out-bag-2026-11" data-close="2026-12-01T04:59:59Z">
+    <p class="label">ONE TIME · FREE ONLINE ROUTE</p>
+    <h2>Off Grid Warehouse Bug Out Bag Giveaway</h2>
+    <p class="meta">One $780 prize · Closes November 30 at 11:59 p.m. ET</p>
+    <p>Use the free base entry with name and email, then confirm your email with the sponsor. Skip purchases, postal entries and optional bonuses.</p>
+    <div class="links">
+      <a href="https://offgridwarehouse.com/giveaway/" data-entry>Open sponsor entry page</a>
+      <a href="https://offgridwarehouse.com/giveaway-rules/">Read official rules</a>
+    </div>
+    <div class="tracking" hidden>
+      <span role="status"></span>
+      <button type="button"></button>
+    </div>
+  </article>
+</main>
+<script>
+  const prefix = 'nyc-sweepstakes-dashboard:entry:';
+  const easternDate = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit'
+  });
+  const cards = document.querySelectorAll('article[data-id]');
+  const storageError = document.querySelector('#storage-error');
+
+  function entryKey(card, now) {
+    const period = card.hasAttribute('data-daily') ? easternDate.format(now) : 'once';
+    return prefix + card.dataset.id + ':' + period;
+  }
+
+  function refresh() {
+    const now = new Date();
+    storageError.hidden = true;
+    for (const card of cards) {
+      const closed = now >= new Date(card.dataset.close);
+      const tracking = card.querySelector('.tracking');
+      const status = tracking.querySelector('[role="status"]');
+      const button = tracking.querySelector('button');
+      tracking.hidden = false;
+      card.querySelector('[data-entry]').hidden = closed;
+      button.hidden = closed;
+      if (closed) {
+        status.textContent = 'Entries closed.';
+        continue;
+      }
+      try {
+        const entered = localStorage.getItem(entryKey(card, now)) === 'entered';
+        const daily = card.hasAttribute('data-daily');
+        status.textContent = entered
+          ? (daily ? 'Marked entered today. Resets at midnight ET.' : 'Marked entered.')
+          : (daily ? 'No entry marked for today.' : 'No entry marked.');
+        button.textContent = entered ? 'Undo checkmark' : 'Mark entered';
+        button.setAttribute('aria-label', button.textContent + ' · ' + card.querySelector('h2').textContent);
+      } catch {
+        storageError.hidden = false;
+        status.textContent = 'Tracking unavailable.';
+        button.hidden = true;
+      }
+    }
+  }
+
+  for (const card of cards) {
+    card.querySelector('button').addEventListener('click', () => {
+      const now = new Date();
+      if (now >= new Date(card.dataset.close)) {
+        refresh();
+        return;
+      }
+      try {
+        const key = entryKey(card, now);
+        if (localStorage.getItem(key) === 'entered') {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, 'entered');
+        }
+      } catch {
+        storageError.hidden = false;
+        return;
+      }
+      refresh();
+    });
+  }
+  window.addEventListener('storage', refresh);
+  window.addEventListener('focus', refresh);
+  setInterval(refresh, 15000);
+  refresh();
+</script>
+</body>
+</html>
