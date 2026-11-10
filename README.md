@@ -10,6 +10,6 @@ Each scan uses GPT-5.4 Mini and makes one OpenAI API request with a requested li
 
 ## Publishing reviewed listings
 
-Before adding a candidate to the checklist, confirm the sponsor, official rules, deadline and timezone, NYC eligibility, and a free online or email entry route that requires only routine details. Exclude paid postage and routes that require a full address, phone number, birth date, ID, banking information or Social Security number at entry. Confirm the entry limit and sponsor's reset time for daily promotions.
+Before adding a candidate to the checklist, confirm the sponsor, official rules, deadline and timezone, NYC eligibility, and a free online or email entry route. Exclude paid postage. Confirm the entry limit and sponsor's reset time for daily promotions. Describe what the sponsor requests at entry and list any separate prize claim requirements so readers can decide whether to enter. The checklist records only entry checkmarks.
 
 Review both small and large prizes. Keep listing IDs stable so editing a listing preserves its browser checkmarks. The scan writes candidate reports in GitHub Actions. A human updates the public checklist after reviewing the sponsor's rules.
