@@ -40,7 +40,8 @@ jobs:
           prompt = f'''Research open sweepstakes for eligible New York City residents as of {today} Eastern Time.
           Return a plain-text candidate report for human review. Look for both smaller prizes and larger prizes.
           Use official sponsor rules or an official administrator and cite the pages you actually consulted.
-          Use web searches that cover different sponsors and prize sizes. Look for up to four candidates.
+          Use web searches that cover different sponsors and prize sizes. Report up to four candidates,
+          with no more than 80 words per candidate.
           Each candidate needs a trustworthy sponsor, finalized official rules, NYC eligibility, an exact
           future deadline with timezone, prize value, a confirmed free online or email route, and the
           entry limit or daily reset time. Nationwide offers qualify if NYC is eligible.
@@ -56,7 +57,7 @@ jobs:
               'tools': [{'type': 'web_search', 'search_context_size': 'low'}],
               'tool_choice': 'required',
               'max_tool_calls': 2,
-              'max_output_tokens': 1800,
+              'max_output_tokens': 2500,
               'reasoning': {'effort': 'low'},
               'store': False,
           }
@@ -80,10 +81,13 @@ jobs:
               raise SystemExit('The OpenAI API request timed out or could not connect.') from None
 
           output = response.get('output', [])
-          if response.get('status') != 'completed' or not any(
-              item.get('type') == 'web_search_call' and item.get('status') == 'completed' for item in output
-          ):
-              raise SystemExit('OpenAI did not complete a web-backed scan.')
+          if response.get('status') != 'completed':
+              reason = (response.get('incomplete_details') or {}).get('reason')
+              if reason == 'max_output_tokens':
+                  raise SystemExit('OpenAI reached the report output limit before finishing.')
+              raise SystemExit('OpenAI did not complete the report.')
+          if not any(item.get('type') == 'web_search_call' and item.get('status') == 'completed' for item in output):
+              raise SystemExit('OpenAI did not complete a web search.')
           parts = [part for item in output if item.get('type') == 'message'
                    for part in item.get('content', []) if part.get('type') == 'output_text']
           report = '\n\n'.join(part['text'] for part in parts).strip()
